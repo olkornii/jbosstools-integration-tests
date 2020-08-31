@@ -24,7 +24,6 @@ import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.testng.ui.bot.test.AbstractTestNGTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,7 +61,11 @@ public class TestNGTest extends AbstractTestNGTest {
 		TextEditor ed = new TextEditor(testNG_file_name);
 		ed.selectText("org.testng");
 
-		ContentAssistant ca = ed.openQuickFixContentAssistant();
+		ContentAssistant ca = null;
+		try {
+			ca = ed.openQuickFixContentAssistant();
+		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) { // comment
+		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ca.chooseProposal("Add TestNG library");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
