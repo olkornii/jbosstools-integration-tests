@@ -62,7 +62,12 @@ public class TestNGTest extends AbstractTestNGTest {
 		TextEditor ed = new TextEditor(testNG_file_name);
 		ed.selectText("org.testng");
 
-		ContentAssistant ca = ed.openQuickFixContentAssistant();
+		ContentAssistant ca = null;
+		try {
+			ca = ed.openQuickFixContentAssistant();
+		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) {
+			ca = ed.openQuickFixContentAssistant();
+		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ca.chooseProposal("Add TestNG library");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
