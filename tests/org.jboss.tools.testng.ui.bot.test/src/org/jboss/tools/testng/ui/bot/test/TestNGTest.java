@@ -16,7 +16,6 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
-import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
@@ -24,7 +23,6 @@ import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.testng.ui.bot.test.AbstractTestNGTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,21 +56,9 @@ public class TestNGTest extends AbstractTestNGTest {
 		new ContextMenuItem("TestNG", "Create TestNG class").select();
 		new FinishButton().click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		addTestNGLibrary(PROJECT_NAME);
 
-		TextEditor ed = new TextEditor(testNG_file_name);
-		ed.selectText("org.testng");
-
-		ContentAssistant ca = null;
-		try {
-			ca = ed.openQuickFixContentAssistant();
-		} catch (org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException e) {
-			ca = ed.openQuickFixContentAssistant();
-		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		ca.chooseProposal("Add TestNG library");
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-
-		ed.save();
 		new TextEditor(testNG_file_name);
 		new ShellMenuItem("Run", "Run As", "2 TestNG Test").select();
 
